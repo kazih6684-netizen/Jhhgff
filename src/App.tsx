@@ -12,8 +12,8 @@ import { ControlPanelModal } from './components/ControlPanelModal';
 
 const DEFAULT_STATE: MeetingState = {
   title: 'Unity Earning E-learning Platform Official Counselling Meeting',
-  subtitle: 'অফিসিয়াল কাউন্সেলিং ও দিকনির্দেশনা সেশন',
-  bengaliHeadline: 'অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!',
+  subtitle: 'আমাদের অফিসিয়াল কাউন্সেলিং ও দিকনির্দেশনা সেশন',
+  bengaliHeadline: 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!',
   bengaliBody: 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন। মিটিং শেষ হলে সম্পূর্ণ কাজ বিস্তারিত বুঝিয়ে দেওয়া হবে।',
   statusBadge: 'LIVE COUNSELLING MEETING • চলছে',
   countdownSeconds: 180, // 3 minutes default
@@ -33,9 +33,19 @@ export default function App() {
         if (parsed.showAmbientMusicWidget === undefined) {
           parsed.showAmbientMusicWidget = true;
         }
+        // Ensure Bengali spelling uses কাউন্সেলিং as requested
+        if (parsed.subtitle) {
+          parsed.subtitle = parsed.subtitle.replace(/কাউন্সিলিং/g, 'কাউন্সেলিং');
+        }
+        if (parsed.bengaliHeadline) {
+          parsed.bengaliHeadline = parsed.bengaliHeadline.replace(/কাউন্সিলিং/g, 'কাউন্সেলিং');
+        }
+        if (parsed.bengaliBody) {
+          parsed.bengaliBody = parsed.bengaliBody.replace(/কাউন্সিলিং/g, 'কাউন্সেলিং');
+        }
         // Automatically upgrade to the direct 2nd part message requested by host
         if (parsed.bengaliHeadline?.includes('প্রথম পর্বের মিটিং সমাপ্ত হয়েছে') || parsed.bengaliHeadline?.includes('শুরু হয়েছে!')) {
-          parsed.bengaliHeadline = 'অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!';
+          parsed.bengaliHeadline = 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!';
           parsed.bengaliBody = 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন। মিটিং শেষ হলে সম্পূর্ণ কাজ বিস্তারিত বুঝিয়ে দেওয়া হবে।';
           parsed.statusBadge = 'LIVE COUNSELLING MEETING • চলছে';
         }

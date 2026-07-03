@@ -79,7 +79,7 @@ export const MeetingScreen: React.FC<Props> = ({
       onChange({
         ...state,
         statusBadge: 'LIVE COUNSELLING MEETING • চলছে',
-        bengaliHeadline: 'অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!',
+        bengaliHeadline: 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!',
         bengaliBody: 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন। মিটিং শেষ হলে সম্পূর্ণ কাজ বিস্তারিত বুঝিয়ে দেওয়া হবে।'
       });
     } else if (type === 'break') {
@@ -148,10 +148,10 @@ export const MeetingScreen: React.FC<Props> = ({
   const themeStyle = getThemeAccent();
 
   const content = (
-    <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-6 flex flex-col items-center justify-center min-h-[75vh] max-h-[92vh] text-center select-none">
+    <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-col items-center justify-center max-h-[88vh] text-center select-none overflow-hidden">
       
       {/* Top Live Status Badge */}
-      <div className={`inline-flex items-center gap-2.5 px-4 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border mb-4 animate-pulse ${themeStyle.badgeBg}`}>
+      <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold uppercase tracking-wider border mb-2.5 sm:mb-3 animate-pulse ${themeStyle.badgeBg}`}>
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
@@ -161,56 +161,67 @@ export const MeetingScreen: React.FC<Props> = ({
       </div>
 
       {/* 1. First: The Official Company & Meeting Title exactly as requested */}
-      <h1 className={`text-3xl sm:text-5xl md:text-[3rem] font-extrabold tracking-tight bg-gradient-to-r ${themeStyle.gradient} bg-clip-text text-transparent leading-tight md:leading-snug max-w-5xl font-sans drop-shadow-sm`}>
+      <h1 className={`text-xl sm:text-3xl md:text-[2.25rem] font-extrabold tracking-tight bg-gradient-to-r ${themeStyle.gradient} bg-clip-text text-transparent leading-tight md:leading-snug max-w-4xl font-sans drop-shadow-sm`}>
         {state.title}
       </h1>
 
       {/* Subtle decorative horizontal separator with glowing center */}
-      <div className="relative w-56 h-0.5 bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent my-6">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-cyan-400 blur-sm" />
+      <div className="relative w-48 h-0.5 bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent my-3 sm:my-4">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-cyan-400 blur-sm" />
       </div>
 
-      {/* 2. Below: The Bengali Announcement Block with dynamic side & border animation */}
-      <div className="relative w-full max-w-5xl my-2 group">
+      {/* 2. Below: The Bengali Announcement Block with modern typography & glassmorphic shimmer animation */}
+      <div className="relative w-full max-w-4xl my-2 sm:my-3 group animate-float-glow">
         {/* Ambient animated backlight aura around the card */}
-        <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/35 via-indigo-500/35 to-blue-500/35 rounded-[2.3rem] blur-2xl opacity-75 animate-pulse duration-1000" />
+        <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/40 via-indigo-500/40 to-blue-500/40 rounded-[2rem] blur-xl opacity-80 animate-pulse duration-1000" />
 
         {/* Shimmering outer frame */}
-        <div className={`relative w-full bg-slate-900/85 backdrop-blur-2xl border-2 ${themeStyle.border} rounded-3xl p-8 sm:p-12 shadow-[0_0_50px_rgba(6,182,212,0.2)] overflow-hidden transition-all duration-500`}>
+        <div className={`relative w-full bg-slate-950/90 backdrop-blur-2xl border-2 ${themeStyle.border} rounded-[1.8rem] sm:rounded-[2rem] p-6 sm:p-9 md:p-10 shadow-[0_0_50px_rgba(6,182,212,0.25)] overflow-hidden transition-all duration-500`}>
           
           {/* Animated vertical laser lines along the left and right edges */}
-          <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-cyan-400 to-transparent animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
-          <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-blue-400 to-transparent animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.8)]" style={{ animationDelay: '600ms' }} />
+          <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-cyan-400 to-transparent animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.9)]" />
+          <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-blue-400 to-transparent animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.9)]" style={{ animationDelay: '600ms' }} />
 
           {/* Shimmering top and bottom highlight bars */}
-          <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-cyan-300 to-transparent opacity-80" />
-          <div className="absolute bottom-0 left-1/3 right-1/3 h-[1px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-80" />
+          <div className="absolute top-0 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-cyan-300 to-transparent opacity-90" />
+          <div className="absolute bottom-0 left-1/3 right-1/3 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-90" />
 
           {/* Floating background glowing orbs inside the card */}
-          <div className="absolute -top-12 -left-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none animate-bounce" style={{ animationDuration: '7s' }} />
-          <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none animate-bounce" style={{ animationDuration: '9s' }} />
+          <div className="absolute -top-12 -left-12 w-48 h-48 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none animate-bounce" style={{ animationDuration: '7s' }} />
+          <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-blue-500/15 rounded-full blur-3xl pointer-events-none animate-bounce" style={{ animationDuration: '9s' }} />
 
-          {/* Main Bengali Headline */}
-          <h2 className="relative z-10 text-3xl sm:text-4xl md:text-[2.7rem] font-extrabold text-white leading-snug tracking-normal mb-5 drop-shadow-lg">
+          {/* Decorative badge header above text */}
+          <div className="relative z-10 flex items-center justify-center gap-2 mb-3.5 sm:mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-[11px] sm:text-xs font-semibold tracking-wider uppercase shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+              জরুরি নোটিশ ও নির্দেশনা
+            </span>
+          </div>
+
+          {/* Main Bengali Headline with Premium Typography & Gradient Shimmer */}
+          <h2 className="relative z-10 text-2xl sm:text-4xl md:text-[2.5rem] font-extrabold font-[var(--font-bengali)] text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-blue-200 leading-[1.3] sm:leading-[1.35] tracking-normal mb-4 sm:mb-5 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] animate-text-shimmer">
             {state.bengaliHeadline}
           </h2>
 
-          {/* Main Bengali Body */}
-          <p className="relative z-10 text-xl sm:text-[1.65rem] text-blue-100/95 leading-relaxed font-normal max-w-4xl mx-auto tracking-wide">
+          {/* Elegant divider inside card */}
+          <div className="relative z-10 w-24 h-[2px] mx-auto bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent mb-4 sm:mb-5" />
+
+          {/* Main Bengali Body with Premium Spacing & Legibility */}
+          <p className="relative z-10 text-lg sm:text-xl md:text-[1.5rem] text-slate-100/95 font-medium font-[var(--font-bengali)] leading-[1.6] max-w-3xl mx-auto tracking-wide drop-shadow-md">
             {state.bengaliBody}
           </p>
         </div>
       </div>
 
       {/* Live Stream Assurance Bar at bottom */}
-      <div className="mt-5 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-slate-400">
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
-          <Clock className="w-3.5 h-3.5 text-cyan-400" />
+      <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-3 text-[11px] sm:text-xs font-mono text-slate-400">
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/5 border border-white/10">
+          <Clock className="w-3 h-3 text-cyan-400" />
           <span>বর্তমান সময়: <strong className="text-slate-200">{formatTime(currentTime)}</strong></span>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/5 border border-white/10">
+          <ShieldCheck className="w-3 h-3 text-emerald-400" />
           <span>অফিসিয়াল লাইভ সেশন • সব অংশগ্রহণকারীর উপস্থিতি বাধ্যতামূলক</span>
         </div>
       </div>
@@ -218,7 +229,7 @@ export const MeetingScreen: React.FC<Props> = ({
   );
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center overflow-x-hidden">
+    <div className="h-screen max-h-screen w-full flex items-center justify-center overflow-hidden bg-slate-950">
       {/* Top Right Ambient Sound Player Widget */}
       <AmbientSoundPlayer isVisible={state.showAmbientMusicWidget !== false} />
 
@@ -264,20 +275,20 @@ export const MeetingScreen: React.FC<Props> = ({
       </div>
 
       {isLaptopFrame ? (
-        /* Laptop Device Frame Preview Mode */
-        <div className="relative w-full max-w-6xl mx-auto p-4 sm:p-8">
-          <div className="relative bg-slate-950 border-[10px] sm:border-[16px] border-slate-800 rounded-t-3xl shadow-[0_25px_80px_rgba(0,0,0,0.8)] overflow-hidden min-h-[72vh] flex items-center justify-center">
+        /* Laptop Device Frame Preview Mode - Perfectly fitted inside viewport without scrolling */
+        <div className="relative w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center max-h-[96vh]">
+          <div className="relative w-full bg-slate-950 border-[8px] sm:border-[12px] border-slate-800 rounded-t-2xl sm:rounded-t-3xl shadow-[0_20px_70px_rgba(0,0,0,0.85)] overflow-hidden max-h-[82vh] flex items-center justify-center">
             {/* Laptop camera notch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-4 bg-slate-800 rounded-b-xl flex items-center justify-center z-40">
-              <div className="w-2 h-2 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center">
-                <div className="w-1 h-1 rounded-full bg-blue-500/60" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-3 bg-slate-800 rounded-b-lg flex items-center justify-center z-40">
+              <div className="w-1.5 h-1.5 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center">
+                <div className="w-0.5 h-0.5 rounded-full bg-blue-500/60" />
               </div>
             </div>
             {content}
           </div>
           {/* Laptop Base */}
-          <div className="relative h-6 bg-gradient-to-b from-slate-700 to-slate-800 rounded-b-2xl mx-auto w-[104%] -ml-[2%] shadow-2xl flex items-center justify-center">
-            <div className="w-16 h-1.5 bg-slate-600 rounded-full" />
+          <div className="relative h-4 sm:h-5 bg-gradient-to-b from-slate-700 to-slate-800 rounded-b-xl mx-auto w-[103%] -ml-[1.5%] shadow-2xl flex items-center justify-center">
+            <div className="w-14 h-1 bg-slate-600 rounded-full" />
           </div>
         </div>
       ) : (
