@@ -1,6 +1,6 @@
 import React from 'react';
 import { MeetingState } from '../types';
-import { X, Palette, Clock, Type, Sparkles, Monitor, RotateCcw } from 'lucide-react';
+import { X, Palette, Clock, Type, Sparkles, Monitor, RotateCcw, Volume2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface Props {
@@ -111,6 +111,29 @@ export const ControlPanelModal: React.FC<Props> = ({
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Ambient Music Widget Toggle */}
+          <div className="bg-black/30 border border-white/10 rounded-xl p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                <Volume2 className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-semibold text-white">অ্যাম্বিয়েন্ট মিউজিক বাটন (ডানপাশে উপরে)</h4>
+                <p className="text-[11px] text-slate-400">স্ক্রিনের উপরে ডানপাশে শান্ত আবহ বা ভিড়ের সাউন্ড অপশন দেখাবে কিনা</p>
+              </div>
+            </div>
+            <button
+              onClick={() => onChange({ ...state, showAmbientMusicWidget: !(state.showAmbientMusicWidget !== false) })}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                state.showAmbientMusicWidget !== false
+                  ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 shadow-[0_0_10px_rgba(16,185,129,0.2)]'
+                  : 'bg-slate-800 text-slate-400 border-white/10 hover:bg-slate-700'
+              }`}
+            >
+              {state.showAmbientMusicWidget !== false ? 'চালু আছে (ON)' : 'বন্ধ আছে (OFF)'}
+            </button>
           </div>
 
           {/* Text Editing */}

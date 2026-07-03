@@ -146,7 +146,7 @@ export const SecretAudioPlayer: React.FC<Props> = ({ onPlayStateChange }) => {
         setRecordingTime(prev => prev + 1);
       }, 1000);
     } catch (err) {
-      console.error('Microphone permission denied:', err);
+      console.warn('Microphone permission denied or cancelled:', err);
       setMicError('মাইক্রোফোনের অনুমতি পাওয়া যায়নি বা ব্রাউজারে ব্লক করা হয়েছে। অনুগ্রহ করে উপরের বাটন দিয়ে সরাসরি অডিও/MP3 ফাইল আপলোড করুন।');
     }
   };

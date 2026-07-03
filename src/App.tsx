@@ -21,6 +21,7 @@ const DEFAULT_STATE: MeetingState = {
   theme: 'cyber-cyan',
   showParticles: true,
   showAudioVisualizer: true,
+  showAmbientMusicWidget: true,
 };
 
 export default function App() {
@@ -29,6 +30,9 @@ export default function App() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
+        if (parsed.showAmbientMusicWidget === undefined) {
+          parsed.showAmbientMusicWidget = true;
+        }
         // Automatically upgrade to the direct 2nd part message requested by host
         if (parsed.bengaliHeadline?.includes('প্রথম পর্বের মিটিং সমাপ্ত হয়েছে') || parsed.bengaliHeadline?.includes('শুরু হয়েছে!')) {
           parsed.bengaliHeadline = 'অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!';

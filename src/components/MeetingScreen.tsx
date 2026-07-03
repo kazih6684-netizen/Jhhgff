@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MeetingState } from '../types';
 import { Settings, Maximize2, Minimize2, Radio, Clock, ShieldCheck, PlayCircle, PauseCircle, CheckCircle2, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { AmbientSoundPlayer } from './AmbientSoundPlayer';
 
 interface Props {
   state: MeetingState;
@@ -169,21 +170,36 @@ export const MeetingScreen: React.FC<Props> = ({
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-cyan-400 blur-sm" />
       </div>
 
-      {/* 2. Below: The Bengali Announcement Block inside a glassmorphic glowing card */}
-      <div className={`relative w-full max-w-5xl bg-slate-900/75 backdrop-blur-xl border ${themeStyle.border} rounded-3xl p-8 sm:p-12 ${themeStyle.glow} transition-all duration-500 overflow-hidden group`}>
-        
-        {/* Subtle animated border neon ripple */}
-        <div className="absolute -inset-[1px] bg-gradient-to-r from-cyan-500/20 via-transparent to-blue-500/20 rounded-3xl opacity-50 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      {/* 2. Below: The Bengali Announcement Block with dynamic side & border animation */}
+      <div className="relative w-full max-w-5xl my-2 group">
+        {/* Ambient animated backlight aura around the card */}
+        <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/35 via-indigo-500/35 to-blue-500/35 rounded-[2.3rem] blur-2xl opacity-75 animate-pulse duration-1000" />
 
-        {/* Main Bengali Headline */}
-        <h2 className="text-3xl sm:text-4xl md:text-[2.7rem] font-extrabold text-white leading-snug tracking-normal mb-5 drop-shadow-lg">
-          {state.bengaliHeadline}
-        </h2>
+        {/* Shimmering outer frame */}
+        <div className={`relative w-full bg-slate-900/85 backdrop-blur-2xl border-2 ${themeStyle.border} rounded-3xl p-8 sm:p-12 shadow-[0_0_50px_rgba(6,182,212,0.2)] overflow-hidden transition-all duration-500`}>
+          
+          {/* Animated vertical laser lines along the left and right edges */}
+          <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-cyan-400 to-transparent animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
+          <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-blue-400 to-transparent animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.8)]" style={{ animationDelay: '600ms' }} />
 
-        {/* Main Bengali Body */}
-        <p className="text-xl sm:text-[1.65rem] text-blue-100/95 leading-relaxed font-normal max-w-4xl mx-auto tracking-wide">
-          {state.bengaliBody}
-        </p>
+          {/* Shimmering top and bottom highlight bars */}
+          <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-cyan-300 to-transparent opacity-80" />
+          <div className="absolute bottom-0 left-1/3 right-1/3 h-[1px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-80" />
+
+          {/* Floating background glowing orbs inside the card */}
+          <div className="absolute -top-12 -left-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none animate-bounce" style={{ animationDuration: '7s' }} />
+          <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none animate-bounce" style={{ animationDuration: '9s' }} />
+
+          {/* Main Bengali Headline */}
+          <h2 className="relative z-10 text-3xl sm:text-4xl md:text-[2.7rem] font-extrabold text-white leading-snug tracking-normal mb-5 drop-shadow-lg">
+            {state.bengaliHeadline}
+          </h2>
+
+          {/* Main Bengali Body */}
+          <p className="relative z-10 text-xl sm:text-[1.65rem] text-blue-100/95 leading-relaxed font-normal max-w-4xl mx-auto tracking-wide">
+            {state.bengaliBody}
+          </p>
+        </div>
       </div>
 
       {/* Live Stream Assurance Bar at bottom */}
@@ -203,6 +219,9 @@ export const MeetingScreen: React.FC<Props> = ({
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center overflow-x-hidden">
+      {/* Top Right Ambient Sound Player Widget */}
+      <AmbientSoundPlayer isVisible={state.showAmbientMusicWidget !== false} />
+
       {/* Top Left Host Preset Switches & Party Trigger */}
       <div className="fixed top-4 left-4 z-50 flex items-center gap-1 opacity-30 hover:opacity-100 transition-opacity duration-300 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-2xl border border-white/15 shadow-2xl">
         <button

@@ -19,4 +19,5 @@ export interface MeetingState {
   theme: 'cyber-cyan' | 'royal-emerald' | 'deep-violet' | 'gold-amber';
   showParticles: boolean;
   showAudioVisualizer: boolean;
+  showAmbientMusicWidget?: boolean;
 }
