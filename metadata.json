@@ -1,0 +1,6 @@
+{
+  "name": "Unity E-learning Meeting Standby",
+  "description": "Dynamic screen-sharing intermission screen for Unity Earning E-learning Platform Official Counselling Meeting with secret voice player.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
