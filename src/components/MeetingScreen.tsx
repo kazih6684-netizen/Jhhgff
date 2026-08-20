@@ -169,7 +169,7 @@ export const MeetingScreen: React.FC<Props> = ({
     <div className="relative z-10 w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-5 flex flex-col items-center justify-center min-h-[90vh] text-center select-none">
       
       {/* Top Status & Brand Lockup with generous spacing */}
-      <div className="flex flex-col items-center gap-2.5 mb-3 sm:mb-4">
+      <div className="flex flex-col items-center gap-2.5 mb-3 sm:mb-4 animate-slide-up">
         {/* Top Live Broadcast Status Badge with Equalizer Animation */}
         <div className={`inline-flex items-center gap-2.5 px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase border backdrop-blur-md shadow-lg ${themeStyle.badgeBg}`}>
           <span className="relative flex h-2.5 w-2.5">
@@ -190,59 +190,77 @@ export const MeetingScreen: React.FC<Props> = ({
 
         {/* Brand Super-title */}
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-[0.25em] text-cyan-300 uppercase font-mono mt-0.5">
-          <Sparkles className="w-4 h-4 text-cyan-400" />
+          <Sparkles className="w-4 h-4 text-cyan-400 animate-spin" style={{ animationDuration: '10s' }} />
           <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">UNITY EARNING • E-LEARNING PLATFORM</span>
-          <Sparkles className="w-4 h-4 text-cyan-400" />
+          <Sparkles className="w-4 h-4 text-cyan-400 animate-spin" style={{ animationDuration: '10s' }} />
         </div>
       </div>
 
-      {/* 1. Official Meeting Title with Clear Breathing Room */}
-      <h1 className="text-xl sm:text-3xl md:text-[2.35rem] lg:text-[2.65rem] font-black tracking-wider text-white leading-snug sm:leading-tight max-w-5xl font-[var(--font-display)] drop-shadow-[0_3px_10px_rgba(0,0,0,0.9)] mb-2.5 sm:mb-3">
+      {/* 1. Official Meeting Title with Clear Breathing Room & Kinetic Entry */}
+      <h1 className="text-xl sm:text-3xl md:text-[2.35rem] lg:text-[2.65rem] font-black tracking-wider text-white leading-snug sm:leading-tight max-w-5xl font-[var(--font-display)] drop-shadow-[0_3px_10px_rgba(0,0,0,0.9)] mb-2.5 sm:mb-3 animate-slide-up-delay-1">
         OFFICIAL COUNSELLING MEETING
       </h1>
 
       {/* Subtle decorative horizontal separator with glowing center */}
-      <div className="relative w-56 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent mb-4 sm:mb-5">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,1)]" />
+      <div className="relative w-56 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent mb-4 sm:mb-5 animate-slide-up-delay-1">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(6,182,212,1)] animate-pulse" />
       </div>
 
       {/* 2. Main Bengali Announcement Card: Extended Width, 25-30% More Height, Clear Word Spacing */}
       <div className="relative w-full max-w-5xl xl:max-w-6xl my-2 group animate-float-glow">
-        {/* Ambient backlight aura */}
-        <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-cyan-500/20 rounded-[2.5rem] blur-xl opacity-75" />
+        {/* Ambient rotating and pulsating backlight aurora */}
+        <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/30 via-indigo-600/30 to-blue-500/30 rounded-[2.8rem] blur-2xl opacity-80 animate-pulse-glow" />
 
         {/* Outer Frame with solid dark background for max contrast and roomy padding */}
-        <div className={`relative w-full bg-[#060b19]/95 border-2 ${themeStyle.border} rounded-[1.8rem] sm:rounded-[2.4rem] p-6 sm:p-9 md:p-11 lg:p-13 min-h-[350px] sm:min-h-[400px] md:min-h-[440px] flex flex-col items-center justify-center shadow-[0_0_60px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-500`}>
+        <div className={`relative w-full bg-[#050914]/95 border-2 ${themeStyle.border} rounded-[1.8rem] sm:rounded-[2.4rem] p-6 sm:p-9 md:p-11 lg:p-13 min-h-[350px] sm:min-h-[400px] md:min-h-[440px] flex flex-col items-center justify-center shadow-[0_0_60px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-500`}>
           
-          {/* Tech Corner Crosshairs */}
-          <div className="absolute top-4 left-4 text-cyan-400 text-sm font-mono font-bold select-none">+</div>
-          <div className="absolute top-4 right-4 text-cyan-400 text-sm font-mono font-bold select-none">+</div>
+          {/* Ambient Cyber Grid & Light Rays inside card */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-900/20 via-transparent to-transparent pointer-events-none" />
+          
+          {/* Tech Corner Crosshairs with glowing dots */}
+          <div className="absolute top-4 left-4 flex items-center gap-1 text-cyan-400 text-sm font-mono font-bold select-none">
+            <span>+</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 animate-ping" />
+          </div>
+          <div className="absolute top-4 right-4 flex items-center gap-1 text-cyan-400 text-sm font-mono font-bold select-none">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 animate-ping" />
+            <span>+</span>
+          </div>
           <div className="absolute bottom-4 left-4 text-cyan-400 text-sm font-mono font-bold select-none">+</div>
           <div className="absolute bottom-4 right-4 text-cyan-400 text-sm font-mono font-bold select-none">+</div>
 
-          {/* Vertical laser accent lines */}
-          <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
-          <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.8)]" />
+          {/* Vertical animated laser lines along card borders */}
+          <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_rgba(6,182,212,0.9)] animate-pulse" />
+          <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-blue-500 to-transparent shadow-[0_0_15px_rgba(59,130,246,0.9)] animate-pulse" style={{ animationDelay: '500ms' }} />
 
-          {/* Decorative badge header above text */}
-          <div className="relative z-10 flex items-center justify-center gap-2 mb-4 sm:mb-5">
-            <span className="inline-flex items-center gap-2 px-4.5 py-1.5 rounded-full bg-cyan-950/90 border border-cyan-400/50 text-cyan-300 text-xs sm:text-sm font-bold tracking-wide shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+          {/* Decorative badge header above text with animated entrance */}
+          <div className="relative z-10 flex items-center justify-center gap-2 mb-4 sm:mb-5 animate-slide-up">
+            <span className="inline-flex items-center gap-2.5 px-5 py-1.5 rounded-full bg-cyan-950/90 border border-cyan-400/60 text-cyan-300 text-xs sm:text-sm font-bold tracking-wide shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-400"></span>
+              </span>
               অফিসিয়াল ঘোষণা ও দিকনির্দেশনা
             </span>
           </div>
 
-          {/* Main Bengali Headline with Proper Word Separation & Line Height */}
-          <h2 className="relative z-10 text-2xl sm:text-3xl md:text-[2.5rem] lg:text-[2.85rem] font-bold sm:font-extrabold text-white bengali-heading leading-[1.4] sm:leading-[1.45] max-w-4xl xl:max-w-5xl mx-auto mb-4 sm:mb-5 drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
-            {state.bengaliHeadline}
+          {/* Main Bengali Headline with Guaranteed High-Contrast Visibility */}
+          <h2
+            key={state.bengaliHeadline}
+            className="relative z-10 text-2xl sm:text-3xl md:text-[2.5rem] lg:text-[2.85rem] font-bold sm:font-extrabold text-white bengali-heading leading-[1.4] sm:leading-[1.45] max-w-4xl xl:max-w-5xl mx-auto mb-4 sm:mb-5 drop-shadow-[0_2px_12px_rgba(0,0,0,1)] opacity-100"
+          >
+            {state.bengaliHeadline || "আমাদের অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!"}
           </h2>
 
-          {/* Solid clean separator with ample vertical margin */}
-          <div className="relative z-10 w-44 h-[2px] mx-auto bg-gradient-to-r from-transparent via-cyan-400 to-transparent mb-4 sm:mb-5" />
+          {/* Solid clean separator with glowing pulse */}
+          <div className="relative z-10 w-48 h-[2px] mx-auto bg-gradient-to-r from-transparent via-cyan-400 to-transparent mb-4 sm:mb-5 shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
 
-          {/* Main Bengali Body with Roomy Box, Generous Line-Height and Proper Word Spacing */}
-          <div className="w-full relative z-10 bg-slate-950/90 border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-5 sm:p-7 md:p-8 max-w-4xl xl:max-w-5xl mx-auto shadow-lg">
-            <p className="text-lg sm:text-2xl md:text-[1.65rem] lg:text-[1.85rem] text-slate-100 font-semibold bengali-body leading-[1.7] sm:leading-[1.8] drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+          {/* Main Bengali Body with Roomy Box, Generous Line-Height, Dynamic Float and Smooth Entrance */}
+          <div
+            key={state.bengaliBody}
+            className="w-full relative z-10 bg-slate-950/90 border border-cyan-500/35 rounded-2xl sm:rounded-3xl p-5 sm:p-7 md:p-8 max-w-4xl xl:max-w-5xl mx-auto shadow-2xl animate-slide-up-delay-2 backdrop-blur-md"
+          >
+            <p className="text-lg sm:text-2xl md:text-[1.65rem] lg:text-[1.85rem] text-slate-100 font-semibold bengali-body leading-[1.7] sm:leading-[1.8] drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
               {state.bengaliBody}
             </p>
           </div>
