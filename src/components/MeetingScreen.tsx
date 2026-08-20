@@ -112,117 +112,185 @@ export const MeetingScreen: React.FC<Props> = ({
     switch (state.theme) {
       case 'cyber-cyan':
         return {
-          gradient: 'from-cyan-400 via-sky-300 to-blue-500',
-          border: 'border-cyan-500/30',
-          glow: 'shadow-[0_0_80px_rgba(6,182,212,0.18)]',
-          badgeBg: 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300',
-          ringColor: 'border-cyan-500/40',
+          titleColor: 'text-cyan-300',
+          border: 'border-cyan-500/40',
+          glow: 'shadow-[0_0_60px_rgba(6,182,212,0.25)]',
+          badgeBg: 'bg-cyan-950/80 border-cyan-400/50 text-cyan-300',
+          ringColor: 'border-cyan-500/50',
+          accentColor: '#06b6d4',
+          accentBg: 'bg-cyan-500',
+          cardBorder: 'border-cyan-500/30',
         };
       case 'royal-emerald':
         return {
-          gradient: 'from-emerald-400 via-teal-300 to-green-500',
-          border: 'border-emerald-500/30',
-          glow: 'shadow-[0_0_80px_rgba(16,185,129,0.18)]',
-          badgeBg: 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300',
-          ringColor: 'border-emerald-500/40',
+          titleColor: 'text-emerald-300',
+          border: 'border-emerald-500/40',
+          glow: 'shadow-[0_0_60px_rgba(16,185,129,0.25)]',
+          badgeBg: 'bg-emerald-950/80 border-emerald-400/50 text-emerald-300',
+          ringColor: 'border-emerald-500/50',
+          accentColor: '#10b981',
+          accentBg: 'bg-emerald-500',
+          cardBorder: 'border-emerald-500/30',
         };
       case 'deep-violet':
         return {
-          gradient: 'from-purple-400 via-fuchsia-300 to-indigo-500',
-          border: 'border-purple-500/30',
-          glow: 'shadow-[0_0_80px_rgba(168,85,247,0.18)]',
-          badgeBg: 'bg-purple-500/15 border-purple-500/40 text-purple-300',
-          ringColor: 'border-purple-500/40',
+          titleColor: 'text-purple-300',
+          border: 'border-purple-500/40',
+          glow: 'shadow-[0_0_60px_rgba(168,85,247,0.25)]',
+          badgeBg: 'bg-purple-950/80 border-purple-400/50 text-purple-300',
+          ringColor: 'border-purple-500/50',
+          accentColor: '#a855f7',
+          accentBg: 'bg-purple-500',
+          cardBorder: 'border-purple-500/30',
         };
       case 'gold-amber':
         return {
-          gradient: 'from-amber-400 via-yellow-300 to-orange-500',
-          border: 'border-amber-500/30',
-          glow: 'shadow-[0_0_80px_rgba(245,158,11,0.18)]',
-          badgeBg: 'bg-amber-500/15 border-amber-500/40 text-amber-300',
-          ringColor: 'border-amber-500/40',
+          titleColor: 'text-amber-300',
+          border: 'border-amber-500/40',
+          glow: 'shadow-[0_0_60px_rgba(245,158,11,0.25)]',
+          badgeBg: 'bg-amber-950/80 border-amber-400/50 text-amber-300',
+          ringColor: 'border-amber-500/50',
+          accentColor: '#f59e0b',
+          accentBg: 'bg-amber-500',
+          cardBorder: 'border-amber-500/30',
         };
     }
   };
 
   const themeStyle = getThemeAccent();
 
+  const totalCountdown = state.countdownSeconds > 0 ? state.countdownSeconds : 180;
+  const progressPercent = Math.min(
+    100,
+    Math.max(0, ((totalCountdown - remainingSeconds) / totalCountdown) * 100)
+  );
+
   const content = (
-    <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-col items-center justify-center max-h-[88vh] text-center select-none overflow-hidden">
+    <div className="relative z-10 w-full max-w-6xl xl:max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-5 flex flex-col items-center justify-center min-h-[90vh] text-center select-none">
       
-      {/* Top Live Status Badge */}
-      <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold uppercase tracking-wider border mb-2.5 sm:mb-3 animate-pulse ${themeStyle.badgeBg}`}>
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-        </span>
-        <Radio className="w-3.5 h-3.5" />
-        <span>{state.statusBadge}</span>
+      {/* Top Status & Brand Lockup with generous spacing */}
+      <div className="flex flex-col items-center gap-2.5 mb-3 sm:mb-4">
+        {/* Top Live Broadcast Status Badge with Equalizer Animation */}
+        <div className={`inline-flex items-center gap-2.5 px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase border backdrop-blur-md shadow-lg ${themeStyle.badgeBg}`}>
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
+          </span>
+          
+          {/* Animated sound wave bars */}
+          <div className="flex items-center gap-0.5 h-3.5">
+            <span className="w-0.5 bg-cyan-400 rounded-full animate-pulse h-2.5" style={{ animationDelay: '0ms' }} />
+            <span className="w-0.5 bg-cyan-300 rounded-full animate-pulse h-3.5" style={{ animationDelay: '150ms' }} />
+            <span className="w-0.5 bg-sky-400 rounded-full animate-pulse h-2" style={{ animationDelay: '300ms' }} />
+            <span className="w-0.5 bg-blue-400 rounded-full animate-pulse h-3" style={{ animationDelay: '450ms' }} />
+          </div>
+
+          <span className="font-mono tracking-wider text-slate-100 font-bold">{state.statusBadge}</span>
+        </div>
+
+        {/* Brand Super-title */}
+        <div className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-[0.25em] text-cyan-300 uppercase font-mono mt-0.5">
+          <Sparkles className="w-4 h-4 text-cyan-400" />
+          <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">UNITY EARNING • E-LEARNING PLATFORM</span>
+          <Sparkles className="w-4 h-4 text-cyan-400" />
+        </div>
       </div>
 
-      {/* 1. First: The Official Company & Meeting Title exactly as requested */}
-      <h1 className={`text-xl sm:text-3xl md:text-[2.25rem] font-extrabold tracking-tight bg-gradient-to-r ${themeStyle.gradient} bg-clip-text text-transparent leading-tight md:leading-snug max-w-4xl font-sans drop-shadow-sm`}>
-        {state.title}
+      {/* 1. Official Meeting Title with Clear Breathing Room */}
+      <h1 className="text-xl sm:text-3xl md:text-[2.35rem] lg:text-[2.65rem] font-black tracking-wider text-white leading-snug sm:leading-tight max-w-5xl font-[var(--font-display)] drop-shadow-[0_3px_10px_rgba(0,0,0,0.9)] mb-2.5 sm:mb-3">
+        OFFICIAL COUNSELLING MEETING
       </h1>
 
       {/* Subtle decorative horizontal separator with glowing center */}
-      <div className="relative w-48 h-0.5 bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent my-3 sm:my-4">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-cyan-400 blur-sm" />
+      <div className="relative w-56 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent mb-4 sm:mb-5">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,1)]" />
       </div>
 
-      {/* 2. Below: The Bengali Announcement Block with modern typography & glassmorphic shimmer animation */}
-      <div className="relative w-full max-w-4xl my-2 sm:my-3 group animate-float-glow">
-        {/* Ambient animated backlight aura around the card */}
-        <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/40 via-indigo-500/40 to-blue-500/40 rounded-[2rem] blur-xl opacity-80 animate-pulse duration-1000" />
+      {/* 2. Main Bengali Announcement Card: Extended Width, 25-30% More Height, Clear Word Spacing */}
+      <div className="relative w-full max-w-5xl xl:max-w-6xl my-2 group animate-float-glow">
+        {/* Ambient backlight aura */}
+        <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-cyan-500/20 rounded-[2.5rem] blur-xl opacity-75" />
 
-        {/* Shimmering outer frame */}
-        <div className={`relative w-full bg-slate-950/90 backdrop-blur-2xl border-2 ${themeStyle.border} rounded-[1.8rem] sm:rounded-[2rem] p-6 sm:p-9 md:p-10 shadow-[0_0_50px_rgba(6,182,212,0.25)] overflow-hidden transition-all duration-500`}>
+        {/* Outer Frame with solid dark background for max contrast and roomy padding */}
+        <div className={`relative w-full bg-[#060b19]/95 border-2 ${themeStyle.border} rounded-[1.8rem] sm:rounded-[2.4rem] p-6 sm:p-9 md:p-11 lg:p-13 min-h-[350px] sm:min-h-[400px] md:min-h-[440px] flex flex-col items-center justify-center shadow-[0_0_60px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-500`}>
           
-          {/* Animated vertical laser lines along the left and right edges */}
-          <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-cyan-400 to-transparent animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.9)]" />
-          <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-gradient-to-b from-transparent via-blue-400 to-transparent animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.9)]" style={{ animationDelay: '600ms' }} />
+          {/* Tech Corner Crosshairs */}
+          <div className="absolute top-4 left-4 text-cyan-400 text-sm font-mono font-bold select-none">+</div>
+          <div className="absolute top-4 right-4 text-cyan-400 text-sm font-mono font-bold select-none">+</div>
+          <div className="absolute bottom-4 left-4 text-cyan-400 text-sm font-mono font-bold select-none">+</div>
+          <div className="absolute bottom-4 right-4 text-cyan-400 text-sm font-mono font-bold select-none">+</div>
 
-          {/* Shimmering top and bottom highlight bars */}
-          <div className="absolute top-0 left-1/4 right-1/4 h-[2px] bg-gradient-to-r from-transparent via-cyan-300 to-transparent opacity-90" />
-          <div className="absolute bottom-0 left-1/3 right-1/3 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-90" />
-
-          {/* Floating background glowing orbs inside the card */}
-          <div className="absolute -top-12 -left-12 w-48 h-48 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none animate-bounce" style={{ animationDuration: '7s' }} />
-          <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-blue-500/15 rounded-full blur-3xl pointer-events-none animate-bounce" style={{ animationDuration: '9s' }} />
+          {/* Vertical laser accent lines */}
+          <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.8)]" />
+          <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.8)]" />
 
           {/* Decorative badge header above text */}
-          <div className="relative z-10 flex items-center justify-center gap-2 mb-3.5 sm:mb-4">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-[11px] sm:text-xs font-semibold tracking-wider uppercase shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-              জরুরি নোটিশ ও নির্দেশনা
+          <div className="relative z-10 flex items-center justify-center gap-2 mb-4 sm:mb-5">
+            <span className="inline-flex items-center gap-2 px-4.5 py-1.5 rounded-full bg-cyan-950/90 border border-cyan-400/50 text-cyan-300 text-xs sm:text-sm font-bold tracking-wide shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+              অফিসিয়াল ঘোষণা ও দিকনির্দেশনা
             </span>
           </div>
 
-          {/* Main Bengali Headline with Premium Typography & Gradient Shimmer */}
-          <h2 className="relative z-10 text-2xl sm:text-4xl md:text-[2.5rem] font-extrabold font-[var(--font-bengali)] text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-blue-200 leading-[1.3] sm:leading-[1.35] tracking-normal mb-4 sm:mb-5 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] animate-text-shimmer">
+          {/* Main Bengali Headline with Proper Word Separation & Line Height */}
+          <h2 className="relative z-10 text-2xl sm:text-3xl md:text-[2.5rem] lg:text-[2.85rem] font-bold sm:font-extrabold text-white bengali-heading leading-[1.4] sm:leading-[1.45] max-w-4xl xl:max-w-5xl mx-auto mb-4 sm:mb-5 drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
             {state.bengaliHeadline}
           </h2>
 
-          {/* Elegant divider inside card */}
-          <div className="relative z-10 w-24 h-[2px] mx-auto bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent mb-4 sm:mb-5" />
+          {/* Solid clean separator with ample vertical margin */}
+          <div className="relative z-10 w-44 h-[2px] mx-auto bg-gradient-to-r from-transparent via-cyan-400 to-transparent mb-4 sm:mb-5" />
 
-          {/* Main Bengali Body with Premium Spacing & Legibility */}
-          <p className="relative z-10 text-lg sm:text-xl md:text-[1.5rem] text-slate-100/95 font-medium font-[var(--font-bengali)] leading-[1.6] max-w-3xl mx-auto tracking-wide drop-shadow-md">
-            {state.bengaliBody}
-          </p>
+          {/* Main Bengali Body with Roomy Box, Generous Line-Height and Proper Word Spacing */}
+          <div className="w-full relative z-10 bg-slate-950/90 border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-5 sm:p-7 md:p-8 max-w-4xl xl:max-w-5xl mx-auto shadow-lg">
+            <p className="text-lg sm:text-2xl md:text-[1.65rem] lg:text-[1.85rem] text-slate-100 font-semibold bengali-body leading-[1.7] sm:leading-[1.8] drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+              {state.bengaliBody}
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Live Stream Assurance Bar at bottom */}
-      <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-3 text-[11px] sm:text-xs font-mono text-slate-400">
-        <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/5 border border-white/10">
-          <Clock className="w-3 h-3 text-cyan-400" />
-          <span>বর্তমান সময়: <strong className="text-slate-200">{formatTime(currentTime)}</strong></span>
+      {/* Integrated Subtle Countdown Progress Bar Component */}
+      {state.isCountdownActive && (
+        <div className="w-full max-w-xl mx-auto mt-4 px-4 py-2.5 rounded-2xl bg-slate-900/80 border border-cyan-500/30 backdrop-blur-md shadow-lg animate-fadeIn">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-300 mb-1.5">
+            <span className="flex items-center gap-1.5 text-cyan-300 font-semibold">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+              সেশন অগ্রগতি (Time Remaining)
+            </span>
+            <span className="font-bold text-slate-100">{formatCountdown(remainingSeconds)} বাকি ({Math.round(progressPercent)}%)</span>
+          </div>
+          
+          {/* Progress Bar Track */}
+          <div className="relative w-full h-2 rounded-full bg-slate-950/90 overflow-hidden border border-white/10 p-0.5">
+            <div
+              className={`h-full rounded-full bg-gradient-to-r ${
+                state.theme === 'royal-emerald'
+                  ? 'from-emerald-500 to-teal-300'
+                  : state.theme === 'deep-violet'
+                  ? 'from-purple-500 to-fuchsia-300'
+                  : state.theme === 'gold-amber'
+                  ? 'from-amber-500 to-yellow-300'
+                  : 'from-cyan-500 via-sky-400 to-blue-400'
+              } transition-all duration-1000 ease-linear relative shadow-[0_0_12px_rgba(6,182,212,0.8)]`}
+              style={{ width: `${progressPercent}%` }}
+            >
+              {/* Glowing leading edge light */}
+              <div className="absolute top-0 right-0 bottom-0 w-2 bg-white rounded-full blur-[1px] shadow-[0_0_8px_#fff]" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Live Stream Assurance & Verification Bar with clean spacing */}
+      <div className="mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs sm:text-sm font-mono text-slate-300 mb-2">
+        <div className="flex items-center gap-2 px-4 py-1.5 rounded-xl bg-slate-900 border border-cyan-500/30 shadow-md">
+          <Clock className="w-4 h-4 text-cyan-400 animate-pulse" />
+          <span>বর্তমান সময়: <strong className="text-white font-mono text-xs sm:text-sm">{formatTime(currentTime)}</strong></span>
         </div>
 
-        <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/5 border border-white/10">
-          <ShieldCheck className="w-3 h-3 text-emerald-400" />
-          <span>অফিসিয়াল লাইভ সেশন • সব অংশগ্রহণকারীর উপস্থিতি বাধ্যতামূলক</span>
+        <div className="flex items-center gap-2 px-4 py-1.5 rounded-xl bg-slate-900 border border-emerald-500/30 shadow-md">
+          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          <span className="text-slate-100 font-medium">ভেরিফাইড অফিসিয়াল লাইভ সেশন</span>
         </div>
       </div>
     </div>
@@ -232,6 +300,26 @@ export const MeetingScreen: React.FC<Props> = ({
     <div className="h-screen max-h-screen w-full flex items-center justify-center overflow-hidden bg-slate-950">
       {/* Top Right Ambient Sound Player Widget */}
       <AmbientSoundPlayer isVisible={state.showAmbientMusicWidget !== false} />
+
+      {/* Persistent Subtle Screen-Edge Progress Bar (Fills up smoothly as meeting timer progresses) */}
+      {state.isCountdownActive && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 h-1.5 bg-slate-950/80 backdrop-blur-sm">
+          <div
+            className={`h-full bg-gradient-to-r ${
+              state.theme === 'royal-emerald'
+                ? 'from-emerald-500 via-teal-400 to-green-300'
+                : state.theme === 'deep-violet'
+                ? 'from-purple-500 via-fuchsia-400 to-indigo-300'
+                : state.theme === 'gold-amber'
+                ? 'from-amber-500 via-yellow-400 to-orange-300'
+                : 'from-cyan-500 via-sky-400 to-blue-400'
+            } transition-all duration-1000 ease-linear shadow-[0_0_12px_rgba(6,182,212,0.9)] relative`}
+            style={{ width: `${progressPercent}%` }}
+          >
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white shadow-[0_0_10px_#fff]" />
+          </div>
+        </div>
+      )}
 
       {/* Top Left Host Preset Switches & Party Trigger */}
       <div className="fixed top-4 left-4 z-50 flex items-center gap-1 opacity-30 hover:opacity-100 transition-opacity duration-300 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-2xl border border-white/15 shadow-2xl">
