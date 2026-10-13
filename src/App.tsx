@@ -15,7 +15,7 @@ const DEFAULT_STATE: MeetingState = {
   currentPart: 'part2',
   title: 'Unity Earning E-learning Platform Official Counselling Meeting',
   subtitle: 'আমাদের অফিসিয়াল কাউন্সেলিং ও দিকনির্দেশনা সেশন',
-  bengaliHeadline: 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।',
+  bengaliHeadline: 'অনুগ্রহ করে কেউ মিটিং থেকে বের হবেন না।',
   bengaliBody: 'খুব শীঘ্রই মিটিংয়ের দ্বিতীয় পর্ব শুরু হবে। দয়া করে সবাই ধৈর্য ধরে মিটিংয়ে যুক্ত থাকুন।',
   statusBadge: '🔴 দ্বিতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে',
   countdownSeconds: 60, // Strictly 1 minute (60s -> 0s)
@@ -49,7 +49,7 @@ export default function App() {
         loaded.currentPart = loaded.currentPart || 'part2';
         loaded.bengaliHeadline = loaded.currentPart === 'part3'
           ? 'তৃতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।'
-          : 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবেন না।';
+          : 'অনুগ্রহ করে কেউ মিটিং থেকে বের হবেন না।';
         loaded.bengaliBody = loaded.currentPart === 'part3'
           ? 'খুব শীঘ্রই মিটিংয়ের তৃতীয় পর্ব শুরু হবে।'
           : 'খুব শীঘ্রই মিটিংয়ের দ্বিতীয় পর্ব শুরু হবে।';
@@ -59,7 +59,7 @@ export default function App() {
       } else if (sessionActiveMode === 'started') {
         loaded.theme = 'cyber-cyan';
         loaded.statusBadge = '🔴 LIVE COUNSELLING MEETING • সম্প্রচার চলছে';
-        loaded.bengaliHeadline = 'আমাদের কাউন্সেলিং সেমিনার মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে!';
+        loaded.bengaliHeadline = 'আমাদের কাউন্সেলিং সেমিনার মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে।';
         loaded.bengaliBody = 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন।';
       } else if (sessionActiveMode === 'ended') {
         loaded.theme = 'royal-emerald';

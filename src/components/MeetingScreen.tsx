@@ -172,7 +172,7 @@ export const MeetingScreen: React.FC<Props> = ({
         theme: 'monochrome-clean',
         statusBadge: isPart2 ? '🔴 দ্বিতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে' : '🔴 তৃতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে',
         bengaliHeadline: isPart2
-          ? 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।'
+          ? 'অনুগ্রহ করে কেউ মিটিং থেকে বের হবেন না।'
           : 'তৃতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।',
         bengaliBody: isPart2
           ? 'খুব শীঘ্রই মিটিংয়ের দ্বিতীয় পর্ব শুরু হবে। দয়া করে সবাই ধৈর্য ধরে মিটিংয়ে যুক্ত থাকুন।'
@@ -194,7 +194,7 @@ export const MeetingScreen: React.FC<Props> = ({
         mode: 'started',
         theme: 'cyber-cyan',
         statusBadge: '🔴 LIVE COUNSELLING MEETING • সম্প্রচার চলছে',
-        bengaliHeadline: 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে!',
+        bengaliHeadline: 'আমাদের কাউন্সেলিং সেমিনার মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে।',
         bengaliBody: 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন। মিটিং শেষ হলে সম্পূর্ণ কাজ বিস্তারিত বুঝিয়ে দেওয়া হবে।',
         isCountdownActive: false,
       });
@@ -210,7 +210,7 @@ export const MeetingScreen: React.FC<Props> = ({
         theme: 'monochrome-clean',
         statusBadge: isPart2 ? '🔴 দ্বিতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে' : '🔴 তৃতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে',
         bengaliHeadline: isPart2
-          ? 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।'
+          ? 'অনুগ্রহ করে কেউ মিটিং থেকে বের হবেন না।'
           : 'তৃতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।',
         bengaliBody: isPart2
           ? 'খুব শীঘ্রই মিটিংয়ের দ্বিতীয় পর্ব শুরু হবে। দয়া করে সবাই ধৈর্য ধরে মিটিংয়ে যুক্ত থাকুন।'
@@ -376,7 +376,7 @@ export const MeetingScreen: React.FC<Props> = ({
                 : 'text-slate-950 drop-shadow-sm'
             }`}
           >
-            {state.bengaliHeadline || 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে!'}
+            {state.bengaliHeadline || 'আমাদের কাউন্সেলিং সেমিনার মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে।'}
           </h1>
 
           {/* Electric Divider Line */}
@@ -662,7 +662,7 @@ export const MeetingScreen: React.FC<Props> = ({
               {state.bengaliHeadline && !state.bengaliHeadline.includes('অনুরোধ')
                 ? state.bengaliHeadline
                 : (isPart2
-                  ? 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।'
+                  ? 'অনুগ্রহ করে কেউ মিটিং থেকে বের হবেন না।'
                   : 'তৃতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।')}
             </h1>
 
