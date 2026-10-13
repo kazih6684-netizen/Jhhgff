@@ -1,23 +1,30 @@
 import React, { useEffect, useRef } from 'react';
 
+import { ThemeType, MeetingMode } from '../types';
+
 interface Props {
-  theme: 'cyber-cyan' | 'royal-emerald' | 'deep-violet' | 'gold-amber';
+  theme: ThemeType;
+  mode?: MeetingMode;
   isPlayingAudio?: boolean;
 }
 
-export const DynamicBackground: React.FC<Props> = ({ theme, isPlayingAudio }) => {
+export const DynamicBackground: React.FC<Props> = ({ theme, mode = 'break', isPlayingAudio }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const getColors = () => {
+    if (mode === 'started') {
+      return { primary: '#38bdf8', secondary: '#2563eb', glow: 'rgba(56, 189, 248, 0.28)' };
+    }
     switch (theme) {
+      case 'cobalt-sapphire':
+        return { primary: '#2563eb', secondary: '#38bdf8', glow: 'rgba(37, 99, 235, 0.22)' };
       case 'cyber-cyan':
-        return { primary: '#06b6d4', secondary: '#3b82f6', glow: 'rgba(6, 182, 212, 0.15)' };
+        return { primary: '#0ea5e9', secondary: '#2563eb', glow: 'rgba(14, 165, 233, 0.20)' };
       case 'royal-emerald':
-        return { primary: '#10b981', secondary: '#059669', glow: 'rgba(16, 185, 129, 0.15)' };
-      case 'deep-violet':
-        return { primary: '#a855f7', secondary: '#6366f1', glow: 'rgba(168, 85, 247, 0.15)' };
-      case 'gold-amber':
-        return { primary: '#f59e0b', secondary: '#ef4444', glow: 'rgba(245, 158, 11, 0.15)' };
+        return { primary: '#10b981', secondary: '#059669', glow: 'rgba(16, 185, 129, 0.20)' };
+      case 'monochrome-clean':
+      default:
+        return { primary: '#3b82f6', secondary: '#10b981', glow: 'rgba(59, 130, 246, 0.18)' };
     }
   };
 
@@ -55,12 +62,13 @@ export const DynamicBackground: React.FC<Props> = ({ theme, isPlayingAudio }) =>
       time += 0.012;
       const { primary, secondary } = getColors();
       
-      // Clear with dark deep navy atmospheric canvas
-      ctx.fillStyle = '#030712';
+      const isLive = mode === 'started';
+      // Clear with soft neumorphic base canvas (#e8ecf4 in break/light, #0f131c in live/dark)
+      ctx.fillStyle = isLive ? '#0f131c' : '#e8ecf4';
       ctx.fillRect(0, 0, width, height);
 
-      // Subtle tech grid pattern
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+      // Subtle neumorphic ambient lighting grid
+      ctx.strokeStyle = isLive ? 'rgba(56, 189, 248, 0.025)' : 'rgba(196, 206, 220, 0.4)';
       ctx.lineWidth = 1;
       const gridSize = 70;
       for (let x = 0; x < width; x += gridSize) {
@@ -81,8 +89,8 @@ export const DynamicBackground: React.FC<Props> = ({ theme, isPlayingAudio }) =>
       const orb1X = width * 0.25 + Math.sin(time * 0.4 * orbSpeed) * 180;
       const orb1Y = height * 0.35 + Math.cos(time * 0.35 * orbSpeed) * 120;
       const grad1 = ctx.createRadialGradient(orb1X, orb1Y, 0, orb1X, orb1Y, 500);
-      grad1.addColorStop(0, primary + (isPlayingAudio ? '28' : '15'));
-      grad1.addColorStop(1, 'rgba(0,0,0,0)');
+      grad1.addColorStop(0, primary + (isPlayingAudio ? '20' : '0e'));
+      grad1.addColorStop(1, 'rgba(255, 255, 255, 0)');
       ctx.fillStyle = grad1;
       ctx.beginPath();
       ctx.arc(orb1X, orb1Y, 500, 0, Math.PI * 2);
@@ -91,8 +99,8 @@ export const DynamicBackground: React.FC<Props> = ({ theme, isPlayingAudio }) =>
       const orb2X = width * 0.75 + Math.cos(time * 0.45 * orbSpeed) * 200;
       const orb2Y = height * 0.65 + Math.sin(time * 0.4 * orbSpeed) * 140;
       const grad2 = ctx.createRadialGradient(orb2X, orb2Y, 0, orb2X, orb2Y, 550);
-      grad2.addColorStop(0, secondary + (isPlayingAudio ? '25' : '12'));
-      grad2.addColorStop(1, 'rgba(0,0,0,0)');
+      grad2.addColorStop(0, secondary + (isPlayingAudio ? '1c' : '0b'));
+      grad2.addColorStop(1, 'rgba(255, 255, 255, 0)');
       ctx.fillStyle = grad2;
       ctx.beginPath();
       ctx.arc(orb2X, orb2Y, 550, 0, Math.PI * 2);
@@ -156,13 +164,12 @@ export const DynamicBackground: React.FC<Props> = ({ theme, isPlayingAudio }) =>
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
     };
-  }, [theme, isPlayingAudio]);
+  }, [theme, mode, isPlayingAudio]);
 
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ background: '#050811' }}
     />
   );
 };

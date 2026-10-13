@@ -7,7 +7,13 @@ export interface AudioConfig {
   volume: number;
 }
 
+export type MeetingMode = 'started' | 'break' | 'ended';
+export type SessionPart = 'part2' | 'part3';
+export type ThemeType = 'cobalt-sapphire' | 'cyber-cyan' | 'royal-emerald' | 'monochrome-clean';
+
 export interface MeetingState {
+  mode: MeetingMode;
+  currentPart?: SessionPart;
   title: string;
   subtitle: string;
   bengaliHeadline: string;
@@ -16,8 +22,9 @@ export interface MeetingState {
   targetTime?: string; // ISO or relative minutes
   countdownSeconds: number;
   isCountdownActive: boolean;
-  theme: 'cyber-cyan' | 'royal-emerald' | 'deep-violet' | 'gold-amber';
+  theme: ThemeType;
   showParticles: boolean;
   showAudioVisualizer: boolean;
   showAmbientMusicWidget?: boolean;
+  soundEnabled?: boolean;
 }

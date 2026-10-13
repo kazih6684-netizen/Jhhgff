@@ -1,7 +1,8 @@
 import React from 'react';
 import { MeetingState } from '../types';
-import { X, Palette, Clock, Type, Sparkles, Monitor, RotateCcw, Volume2 } from 'lucide-react';
+import { X, Palette, Clock, Type, Sparkles, Monitor, RotateCcw, Volume2, VolumeX, ShieldCheck } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { setSoundGloballyEnabled, isSoundGloballyEnabled } from '../lib/soundGenerator';
 
 interface Props {
   isOpen: boolean;
@@ -20,13 +21,21 @@ export const ControlPanelModal: React.FC<Props> = ({
 }) => {
   if (!isOpen) return null;
 
+  // Silent celebration - zero audio per user request
   const triggerCelebration = () => {
     confetti({
-      particleCount: 120,
-      spread: 80,
+      particleCount: 150,
+      spread: 85,
       origin: { y: 0.6 },
-      colors: ['#06b6d4', '#3b82f6', '#10b981', '#f59e0b']
+      colors: ['#2563eb', '#10b981', '#38bdf8', '#059669', '#ffffff']
     });
+  };
+
+  const isSoundActive = state.soundEnabled !== undefined ? state.soundEnabled : isSoundGloballyEnabled();
+
+  const handleSoundToggle = (enable: boolean) => {
+    setSoundGloballyEnabled(enable);
+    onChange({ ...state, soundEnabled: enable });
   };
 
   return (
@@ -40,35 +49,142 @@ export const ControlPanelModal: React.FC<Props> = ({
         </button>
 
         <div className="flex items-center gap-2.5 mb-6 border-b border-white/10 pb-4">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-emerald-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
             <Monitor className="w-5 h-5" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-white">মিটিং স্ক্রিন কন্ট্রোল প্যানেল (Host Settings)</h2>
-            <p className="text-xs text-slate-400">স্ক্রিন শেয়ারের ডিজাইন ও বিরতির সময় নিয়ন্ত্রণ করুন</p>
+            <p className="text-xs text-slate-400">স্ক্রিন শেয়ারের ডিজাইন, সাউন্ড ও বিরতির সময় নিয়ন্ত্রণ করুন</p>
           </div>
         </div>
 
         <div className="space-y-6">
-          {/* Theme Selection */}
+          {/* Permanent Sound Mute / Unmute Setting */}
+          <div className="bg-black/40 border border-blue-500/30 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg">
+            <div className="flex items-start gap-3">
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border transition-colors ${
+                isSoundActive ? 'bg-blue-500/20 text-blue-400 border-blue-500/40' : 'bg-red-500/20 text-red-400 border-red-500/40'
+              }`}>
+                {isSoundActive ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                  <span>সাউন্ড ও নোটিফিকেশন আওয়াজ</span>
+                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
+                    isSoundActive ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-rose-500/20 text-rose-400 border border-rose-500/40'
+                  }`}>
+                    {isSoundActive ? 'সক্রিয় (ON)' : 'স্থায়ীভাবে বন্ধ (OFF)'}
+                  </span>
+                </h4>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  অ্যাপ্লিকেশনের সকল নোটিফিকেশন, বিজয় ফ্যানফেয়ার ও সুইচিং সাউন্ড এক ক্লিকে পার্মানেন্ট বন্ধ বা চালু রাখুন।
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+              <button
+                onClick={() => handleSoundToggle(true)}
+                className={`flex-1 sm:flex-initial px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                  isSoundActive
+                    ? 'bg-blue-600 text-white border-blue-400 shadow-[0_0_12px_rgba(37,99,235,0.4)]'
+                    : 'bg-slate-800 text-slate-400 border-white/10 hover:bg-slate-700'
+                }`}
+              >
+                সাউন্ড চালু (ON)
+              </button>
+              <button
+                onClick={() => handleSoundToggle(false)}
+                className={`flex-1 sm:flex-initial px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                  !isSoundActive
+                    ? 'bg-rose-600 text-white border-rose-400 shadow-[0_0_12px_rgba(244,63,94,0.4)]'
+                    : 'bg-slate-800 text-slate-400 border-white/10 hover:bg-slate-700'
+                }`}
+              >
+                সম্পূর্ণ বন্ধ (OFF)
+              </button>
+            </div>
+          </div>
+
+          {/* Meeting Mode Switcher */}
           <div>
             <label className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-              <Palette className="w-4 h-4 text-cyan-400" />
-              <span>কালার থিম নির্বাচন করুন</span>
+              <Sparkles className="w-4 h-4 text-blue-400" />
+              <span>মিটিং মোড ও স্ক্রিন ফরম্যাট (Meeting Mode)</span>
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              {[
+                {
+                  id: 'started',
+                  title: '🔵 লাইভ সেশন (ডিফারেন্ট ব্রডকাস্ট স্টুডিও)',
+                  desc: 'অন-এয়ার লাইভ স্টুডিও, স্পিকার স্টেজ, অডিও ফ্রিকোয়েন্সি ভিজ্যুয়ালাইজার ও ব্রডকাস্ট ক্লক',
+                  theme: 'cyber-cyan',
+                  headline: 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে!',
+                  body: 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন। মিটিং শেষ হলে সম্পূর্ণ কাজ বিস্তারিত বুঝিয়ে দেওয়া হবে।',
+                  badge: '🔴 LIVE COUNSELLING MEETING • সম্প্রচার চলছে',
+                },
+                {
+                  id: 'break',
+                  title: '⚪ পর্ব বিরতি (হোয়াইট ইন্টারমিশন)',
+                  desc: 'সাদা ব্যাকগ্রাউন্ড, জরুরি নোটিশ ও ১ মিনিট অটো-রিসেট টাইমার',
+                  theme: 'monochrome-clean',
+                  headline: 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।',
+                  body: 'খুব শীঘ্রই মিটিংয়ের দ্বিতীয় পর্ব শুরু হবে। দয়া করে সবাই ধৈর্য ধরে মিটিংয়ে যুক্ত থাকুন।',
+                  badge: '🔴 দ্বিতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে',
+                },
+                {
+                  id: 'ended',
+                  title: '🟢 সফল সমাপ্তি পেজ',
+                  desc: 'ডিপ মোড, গোল্ড-এমারেল্ড বিজয় মেডেল ও ৩টি পরবর্তী করণীয় ধাপ',
+                  theme: 'royal-emerald',
+                  headline: 'আজকের অফিসিয়াল কাউন্সেলিং মিটিং সফলভাবে সমাপ্ত হয়েছে!',
+                  body: 'উপস্থিত থাকার জন্য সকল সম্মানিত সদস্য ও লিডারদের আন্তরিক ধন্যবাদ। পরবর্তী সেশনের আপডেট পেতে আপনার রেফারেন্স লিডারের সাথে যোগাযোগ করুন।',
+                  badge: 'MEETING CONCLUDED • সফল সমাপ্তি',
+                },
+              ].map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() =>
+                    onChange({
+                      ...state,
+                      mode: m.id as any,
+                      theme: m.theme as any,
+                      statusBadge: m.badge,
+                      bengaliHeadline: m.headline,
+                      bengaliBody: m.body,
+                    })
+                  }
+                  className={`p-3.5 rounded-xl border text-left transition-all ${
+                    (state.mode || 'break') === m.id
+                      ? 'border-blue-400 bg-blue-500/15 shadow-[0_0_20px_rgba(37,99,235,0.25)]'
+                      : 'border-white/10 bg-black/30 hover:bg-white/5'
+                  }`}
+                >
+                  <div className="text-xs font-bold text-white mb-1">{m.title}</div>
+                  <div className="text-[11px] text-slate-300 leading-snug">{m.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+              <Palette className="w-4 h-4 text-blue-400" />
+              <span>কালার প্যালেট (কালো, সাদা, সবুজ ও নীল)</span>
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               {[
-                { id: 'cyber-cyan', name: 'Cyber Cyan (ডিফল্ট)', color: 'from-cyan-500 to-blue-600' },
-                { id: 'royal-emerald', name: 'Royal Emerald', color: 'from-emerald-500 to-teal-700' },
-                { id: 'deep-violet', name: 'Deep Violet', color: 'from-purple-500 to-indigo-600' },
-                { id: 'gold-amber', name: 'Gold Amber', color: 'from-amber-500 to-orange-600' },
+                { id: 'monochrome-clean', name: 'White & Black (বিরতি)', color: 'from-slate-100 to-slate-300 border-2 border-white' },
+                { id: 'cyber-cyan', name: 'Deep Cyber Blue (লাইভ)', color: 'from-blue-600 to-cyan-500' },
+                { id: 'royal-emerald', name: 'Royal Emerald (সবুজ)', color: 'from-emerald-500 to-teal-700' },
+                { id: 'cobalt-sapphire', name: 'Cobalt Sapphire (নীল)', color: 'from-blue-700 to-indigo-700' },
               ].map((t) => (
                 <button
                   key={t.id}
                   onClick={() => onChange({ ...state, theme: t.id as MeetingState['theme'] })}
                   className={`p-3 rounded-xl border flex flex-col items-center gap-2 transition-all ${
                     state.theme === t.id
-                      ? 'border-cyan-400 bg-white/10 shadow-[0_0_15px_rgba(6,182,212,0.2)]'
+                      ? 'border-blue-400 bg-white/10 shadow-[0_0_15px_rgba(37,99,235,0.2)]'
                       : 'border-white/10 bg-black/30 hover:bg-white/5'
                   }`}
                 >

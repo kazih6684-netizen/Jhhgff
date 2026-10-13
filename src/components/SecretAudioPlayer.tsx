@@ -185,11 +185,11 @@ export const SecretAudioPlayer: React.FC<Props> = ({ onPlayStateChange }) => {
       )}
 
       {/* 
-        STEALTH SECRET BUTTON IN TOP RIGHT CORNER 
+        STEALTH SECRET BUTTON
         Looks like a tiny ambient UI light dot or subtle status indicator so viewers on screen share won't notice it.
         Single click toggles play/pause. Double click or Right click opens the secret uploader!
       */}
-      <div className="fixed top-4 right-4 z-50 flex items-center gap-2 group">
+      <div className="fixed top-4 right-44 sm:right-48 z-40 flex items-center gap-2 group">
         <button
           onClick={togglePlay}
           onDoubleClick={() => setIsModalOpen(true)}
@@ -198,7 +198,7 @@ export const SecretAudioPlayer: React.FC<Props> = ({ onPlayStateChange }) => {
             setIsModalOpen(true);
           }}
           title="Secret Voice Trigger (Double click or Right click for upload menu)"
-          className={`relative w-3.5 h-3.5 rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center ${
+          className={`relative w-3 h-3 rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center ${
             isPlaying 
               ? 'bg-cyan-400 shadow-[0_0_12px_#06b6d4]' 
               : audioUrl 

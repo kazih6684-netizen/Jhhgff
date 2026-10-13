@@ -4,65 +4,93 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { MeetingState } from './types';
+import { MeetingState, MeetingMode } from './types';
 import { DynamicBackground } from './components/DynamicBackground';
 import { MeetingScreen } from './components/MeetingScreen';
 import { SecretAudioPlayer } from './components/SecretAudioPlayer';
 import { ControlPanelModal } from './components/ControlPanelModal';
 
 const DEFAULT_STATE: MeetingState = {
+  mode: 'break',
+  currentPart: 'part2',
   title: 'Unity Earning E-learning Platform Official Counselling Meeting',
   subtitle: 'আমাদের অফিসিয়াল কাউন্সেলিং ও দিকনির্দেশনা সেশন',
-  bengaliHeadline: 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!',
-  bengaliBody: 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন। মিটিং শেষ হলে সম্পূর্ণ কাজ বিস্তারিত বুঝিয়ে দেওয়া হবে।',
-  statusBadge: 'LIVE COUNSELLING MEETING • চলছে',
-  countdownSeconds: 180, // 3 minutes default
-  isCountdownActive: false,
-  theme: 'cyber-cyan',
+  bengaliHeadline: 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।',
+  bengaliBody: 'খুব শীঘ্রই মিটিংয়ের দ্বিতীয় পর্ব শুরু হবে। দয়া করে সবাই ধৈর্য ধরে মিটিংয়ে যুক্ত থাকুন।',
+  statusBadge: '🔴 দ্বিতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে',
+  countdownSeconds: 60, // Strictly 1 minute (60s -> 0s)
+  isCountdownActive: true,
+  theme: 'monochrome-clean', // Pure crisp White background, bold Black text, Royal Blue & Emerald Green accents
   showParticles: true,
   showAudioVisualizer: true,
   showAmbientMusicWidget: true,
+  soundEnabled: true,
 };
 
 export default function App() {
   const [state, setState] = useState<MeetingState>(() => {
+    // If host explicitly changed mode during this browser session, respect it; otherwise default to 'break'
+    const sessionActiveMode = (sessionStorage.getItem('unity_active_mode') as MeetingMode | null) || 'break';
     const saved = localStorage.getItem('unity_meeting_state');
+    let loaded: MeetingState = { ...DEFAULT_STATE };
+
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed.showAmbientMusicWidget === undefined) {
-          parsed.showAmbientMusicWidget = true;
-        }
-        // Ensure Bengali spelling uses কাউন্সেলিং as requested
-        if (parsed.subtitle) {
-          parsed.subtitle = parsed.subtitle.replace(/কাউন্সিলিং/g, 'কাউন্সেলিং');
-        }
-        if (parsed.bengaliHeadline) {
-          parsed.bengaliHeadline = parsed.bengaliHeadline.replace(/কাউন্সিলিং/g, 'কাউন্সেলিং');
-        }
-        if (parsed.bengaliBody) {
-          parsed.bengaliBody = parsed.bengaliBody.replace(/কাউন্সিলিং/g, 'কাউন্সেলিং');
-        }
-        // Automatically upgrade to the direct 2nd part message requested by host
-        if (parsed.bengaliHeadline?.includes('প্রথম পর্বের মিটিং সমাপ্ত হয়েছে') || parsed.bengaliHeadline?.includes('শুরু হয়েছে!')) {
-          parsed.bengaliHeadline = 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিং এর দ্বিতীয় পর্ব শুরু হয়েছে!';
-          parsed.bengaliBody = 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন। মিটিং শেষ হলে সম্পূর্ণ কাজ বিস্তারিত বুঝিয়ে দেওয়া হবে।';
-          parsed.statusBadge = 'LIVE COUNSELLING MEETING • চলছে';
-        }
-        return parsed;
+        loaded = { ...loaded, ...parsed };
       } catch (e) {
         console.error('Failed to parse saved state', e);
       }
     }
-    return DEFAULT_STATE;
+
+    // Always start on 'break' mode when link is opened, unless session has active mode override
+    loaded.mode = sessionActiveMode;
+    if (sessionActiveMode === 'break') {
+      loaded.theme = 'monochrome-clean'; // Clean White Slide with Black Typography
+      loaded.countdownSeconds = 60; // 1 minute countdown
+      loaded.isCountdownActive = true;
+      loaded.currentPart = loaded.currentPart || 'part2';
+      loaded.bengaliHeadline = loaded.currentPart === 'part3'
+        ? 'তৃতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।'
+        : 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।';
+      loaded.bengaliBody = loaded.currentPart === 'part3'
+        ? 'খুব শীঘ্রই মিটিংয়ের তৃতীয় পর্ব শুরু হবে। দয়া করে সবাই ধৈর্য ধরে মিটিংয়ে যুক্ত থাকুন।'
+        : 'খুব শীঘ্রই মিটিংয়ের দ্বিতীয় পর্ব শুরু হবে। দয়া করে সবাই ধৈর্য ধরে মিটিংয়ে যুক্ত থাকুন।';
+      loaded.statusBadge = loaded.currentPart === 'part3'
+        ? '🔴 তৃতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে'
+        : '🔴 দ্বিতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে';
+    } else if (sessionActiveMode === 'started') {
+      loaded.theme = 'cyber-cyan';
+      loaded.statusBadge = '🔴 LIVE COUNSELLING MEETING • সম্প্রচার চলছে';
+      loaded.bengaliHeadline = 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে!';
+      loaded.bengaliBody = 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন। মিটিং শেষ হলে সম্পূর্ণ কাজ বিস্তারিত বুঝিয়ে দেওয়া হবে।';
+    } else if (sessionActiveMode === 'ended') {
+      loaded.theme = 'royal-emerald';
+      loaded.statusBadge = 'MEETING CONCLUDED • সফল সমাপ্তি';
+      loaded.bengaliHeadline = 'আজকের অফিসিয়াল কাউন্সেলিং মিটিং সফলভাবে সমাপ্ত হয়েছে!';
+      loaded.bengaliBody = 'উপস্থিত থাকার জন্য সকল সম্মানিত সদস্য ও লিডারদের আন্তরিক ধন্যবাদ। পরবর্তী সেশনের আপডেট পেতে আপনার রেফারেন্স লিডারের সাথে যোগাযোগ করুন।';
+    }
+
+    if (loaded.mode === 'break') {
+      if (!loaded.bengaliHeadline || loaded.bengaliHeadline.includes('অনুরোধ') || loaded.bengaliHeadline.includes('হবেন')) {
+        loaded.bengaliHeadline = loaded.currentPart === 'part3'
+          ? 'তৃতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।'
+          : 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।';
+      }
+    }
+
+    return loaded;
   });
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
-  // Save changes to localStorage
+  // Save changes to localStorage & sessionStorage
   useEffect(() => {
     localStorage.setItem('unity_meeting_state', JSON.stringify(state));
+    if (state.mode) {
+      sessionStorage.setItem('unity_active_mode', state.mode);
+    }
   }, [state]);
 
   const handleReset = () => {
@@ -70,10 +98,12 @@ export default function App() {
     localStorage.removeItem('unity_meeting_state');
   };
 
+  const isLive = state.mode === 'started';
+
   return (
-    <div className="relative min-h-screen w-full bg-[#050811] font-sans text-white overflow-hidden select-none">
+    <div className={`relative min-h-screen w-full font-sans overflow-hidden select-none transition-colors duration-500 ${isLive ? 'bg-[#0f131c] text-white' : 'bg-[#e8ecf4] text-slate-900'}`}>
       {/* Interactive Canvas Background with Floating Light Orbs */}
-      <DynamicBackground theme={state.theme} isPlayingAudio={isPlayingAudio} />
+      <DynamicBackground theme={state.theme} mode={state.mode} isPlayingAudio={isPlayingAudio} />
 
       {/* Secret Stealth Audio Player in Top Right Corner */}
       <SecretAudioPlayer onPlayStateChange={setIsPlayingAudio} />
