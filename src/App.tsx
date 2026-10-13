@@ -29,7 +29,6 @@ const DEFAULT_STATE: MeetingState = {
 
 export default function App() {
   const [state, setState] = useState<MeetingState>(() => {
-    // If host explicitly changed mode during this browser session, respect it; otherwise default to 'break'
     const sessionActiveMode = (sessionStorage.getItem('unity_active_mode') as MeetingMode | null) || 'break';
     const saved = localStorage.getItem('unity_meeting_state');
     let loaded: MeetingState = { ...DEFAULT_STATE };
@@ -41,41 +40,32 @@ export default function App() {
       } catch (e) {
         console.error('Failed to parse saved state', e);
       }
-    }
-
-    // Always start on 'break' mode when link is opened, unless session has active mode override
-    loaded.mode = sessionActiveMode;
-    if (sessionActiveMode === 'break') {
-      loaded.theme = 'monochrome-clean'; // Clean White Slide with Black Typography
-      loaded.countdownSeconds = 60; // 1 minute countdown
-      loaded.isCountdownActive = true;
-      loaded.currentPart = loaded.currentPart || 'part2';
-      loaded.bengaliHeadline = loaded.currentPart === 'part3'
-        ? 'তৃতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।'
-        : 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।';
-      loaded.bengaliBody = loaded.currentPart === 'part3'
-        ? 'খুব শীঘ্রই মিটিংয়ের তৃতীয় পর্ব শুরু হবে। দয়া করে সবাই ধৈর্য ধরে মিটিংয়ে যুক্ত থাকুন।'
-        : 'খুব শীঘ্রই মিটিংয়ের দ্বিতীয় পর্ব শুরু হবে। দয়া করে সবাই ধৈর্য ধরে মিটিংয়ে যুক্ত থাকুন।';
-      loaded.statusBadge = loaded.currentPart === 'part3'
-        ? '🔴 তৃতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে'
-        : '🔴 দ্বিতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে';
-    } else if (sessionActiveMode === 'started') {
-      loaded.theme = 'cyber-cyan';
-      loaded.statusBadge = '🔴 LIVE COUNSELLING MEETING • সম্প্রচার চলছে';
-      loaded.bengaliHeadline = 'আমাদের অফিসিয়াল কাউন্সেলিং মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে!';
-      loaded.bengaliBody = 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন। মিটিং শেষ হলে সম্পূর্ণ কাজ বিস্তারিত বুঝিয়ে দেওয়া হবে।';
-    } else if (sessionActiveMode === 'ended') {
-      loaded.theme = 'royal-emerald';
-      loaded.statusBadge = 'MEETING CONCLUDED • সফল সমাপ্তি';
-      loaded.bengaliHeadline = 'আজকের অফিসিয়াল কাউন্সেলিং মিটিং সফলভাবে সমাপ্ত হয়েছে!';
-      loaded.bengaliBody = 'উপস্থিত থাকার জন্য সকল সম্মানিত সদস্য ও লিডারদের আন্তরিক ধন্যবাদ। পরবর্তী সেশনের আপডেট পেতে আপনার রেফারেন্স লিডারের সাথে যোগাযোগ করুন।';
-    }
-
-    if (loaded.mode === 'break') {
-      if (!loaded.bengaliHeadline || loaded.bengaliHeadline.includes('অনুরোধ') || loaded.bengaliHeadline.includes('হবেন')) {
+    } else {
+      loaded.mode = sessionActiveMode;
+      if (sessionActiveMode === 'break') {
+        loaded.theme = 'monochrome-clean';
+        loaded.countdownSeconds = 60;
+        loaded.isCountdownActive = true;
+        loaded.currentPart = loaded.currentPart || 'part2';
         loaded.bengaliHeadline = loaded.currentPart === 'part3'
           ? 'তৃতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।'
-          : 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবে না।';
+          : 'দ্বিতীয় পর্ব বিরতি। অনুগ্রহ করে কেউ মিটিং থেকে বের হবেন না।';
+        loaded.bengaliBody = loaded.currentPart === 'part3'
+          ? 'খুব শীঘ্রই মিটিংয়ের তৃতীয় পর্ব শুরু হবে।'
+          : 'খুব শীঘ্রই মিটিংয়ের দ্বিতীয় পর্ব শুরু হবে।';
+        loaded.statusBadge = loaded.currentPart === 'part3'
+          ? '🔴 তৃতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে'
+          : '🔴 দ্বিতীয় পর্ব শুরু হতে বাকি • বিরতি চলছে';
+      } else if (sessionActiveMode === 'started') {
+        loaded.theme = 'cyber-cyan';
+        loaded.statusBadge = '🔴 LIVE COUNSELLING MEETING • সম্প্রচার চলছে';
+        loaded.bengaliHeadline = 'আমাদের কাউন্সেলিং সেমিনার মিটিংয়ের দ্বিতীয় পর্ব শুরু হয়েছে!';
+        loaded.bengaliBody = 'সবাই মনোযোগ সহকারে কাউন্সেলিং মিটিংটি কন্টিনিউ করুন।';
+      } else if (sessionActiveMode === 'ended') {
+        loaded.theme = 'royal-emerald';
+        loaded.statusBadge = 'MEETING CONCLUDED • সফল সমাপ্তি';
+        loaded.bengaliHeadline = 'আজকের অফিসিয়াল কাউন্সেলিং মিটিং সফলভাবে সমাপ্ত হয়েছে!';
+        loaded.bengaliBody = 'উপস্থিত থাকার জন্য সকল সম্মানিত সদস্য ও লিডারদের আন্তরিক ধন্যবাদ।';
       }
     }
 
